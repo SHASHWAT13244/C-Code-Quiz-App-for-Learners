@@ -70,9 +70,6 @@ cpp-code-quiz-app/
 ├── index.html # Web-based interactive quiz version
 └── README.md # Project documentation
 
-yaml
-Copy
-Edit
 
 ---
 
