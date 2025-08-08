@@ -1,100 +1,109 @@
-🖥️ C++ Code Quiz App – Test Your C++ Skills, Interactively
-C++ • Console App • HTML/CSS/JavaScript • Timed Quiz • Topic-Wise Analysis
+# 🖥️ C++ Code Quiz App – Test Your C++ Skills Interactively
 
-A dual-version quiz application to evaluate and improve C++ programming knowledge.
-Includes a Console-Based CLI App (C++) and a Web-Based Interactive App (HTML/JS), both featuring randomized questions, hints, explanations, and topic-wise performance tracking.
+A dual-version quiz application to evaluate and improve C++ programming knowledge. Includes:
 
-✨ Overview
-The C++ Code Quiz App provides an engaging way to self-assess C++ knowledge through:
+- 🎯 Console-Based CLI App (C++)
+- 🌐 Web-Based Interactive App (HTML/CSS/JS)
 
-📝 Multiple-Choice Questions with detailed explanations
+Both versions feature randomized questions, hints, detailed explanations, and topic-wise performance tracking.
 
-🎯 Randomized quiz experience each time
+---
 
-⏳ Per-question timers for real exam simulation
+## ✨ Overview
 
-💡 Hints to guide learning
+The **C++ Code Quiz App** offers an engaging way to self-assess and improve your C++ skills:
 
-📊 Topic-wise performance analysis
+- 📝 Multiple-choice questions with explanations
+- 🎲 Randomized quiz experience each time
+- ⏳ Per-question timers to simulate real exams
+- 💡 Hints to guide your learning
+- 📊 Topic-wise performance analysis
 
-Built to encourage consistent practice and targeted improvement in C++ fundamentals.
+Built to encourage consistent practice and focused learning in core C++ concepts.
 
-🔧 Key Features
-🗂️ Question Management
-20 curated C++ questions covering syntax, OOP, STL, memory management, etc.
+---
 
-Randomized order in every quiz session
+## 🔧 Key Features
 
-Instant feedback after each answer
+### 🗂️ Question Management
+- 20 curated questions covering:
+  - C++ Syntax
+  - Object-Oriented Programming (OOP)
+  - Standard Template Library (STL)
+  - Memory Management
+- Randomized order in every quiz session
+- Instant feedback after each answer
 
-💡 Learning Support
-Hints available for each question
+### 💡 Learning Support
+- Hints available for each question
+- Detailed explanations for all correct answers
+- Topic-based categorization for targeted practice
 
-Detailed explanations for correct answers
+### 📊 Results & Feedback
+- Final score and percentage at the end of each quiz
+- Emoji-based performance feedback:
+  - 🌟 100% → Excellent!
+  - 🎉 75%+ → Great job!
+  - 👍 50%+ → Good effort
+  - 📚 Below 50% → Needs improvement
+- Topic-wise accuracy chart (Web version only)
 
-Topic-based categorization for focused learning
+---
 
-📊 Results & Feedback
-Final score and percentage displayed at the end
+## 🛠️ Technical Stack
 
-Emoji-based performance feedback:
+| Technology   | Description                          |
+|--------------|--------------------------------------|
+| C++ (CLI)     | Core quiz logic, timer, console I/O |
+| HTML/CSS      | Structure & styling (Web version)   |
+| JavaScript    | DOM manipulation, quiz logic, timer |
+| `chrono` (C++)| Timing functionality in CLI version |
+| `random`      | Shuffling questions for randomness  |
+| `map/object`  | Topic-wise performance tracking     |
 
-🌟 100% → Excellent!
+---
 
-🎉 75%+ → Great job!
+## 📁 Project Structure
 
-👍 50%+ → Good effort
+cpp-code-quiz-app/
+├── main.cpp # Console-based C++ quiz version
+├── index.html # Web-based interactive quiz version
+└── README.md # Project documentation
 
-📚 Below 50% → Needs improvement
-
-Topic-wise accuracy chart (Web version)
-
-🛠️ Technical Stack
-Technology	Description
-C++ (CLI)	Core logic, timer, console I/O
-HTML/CSS	Structure & styling for web version
-JavaScript	Quiz logic, DOM manipulation, timers
-Chrono (C++)	Timing in CLI version
-Random/Shuffle	Randomizing question order
-Map/Object	Topic-wise performance tracking
-
-📁 Project Structure
-bash
+yaml
 Copy
 Edit
-cpp-code-quiz-app/
-│
-├── main.cpp        # Console-based C++ quiz version
-├── index.html      # Web-based interactive quiz version
-└── README.md       # Project documentation
-🎨 Design Highlights
-CLI Version
 
-Minimal, distraction-free interface
+---
 
-Real-time hints
+## 🎨 Design Highlights
 
-Lightweight (runs in any C++ environment)
+### CLI Version
+- Minimal, distraction-free interface
+- Real-time hints and explanations
+- Lightweight (runs on any C++ environment)
 
-Web Version
+### Web Version
+- Responsive, mobile-friendly UI
+- Color-coded correct/incorrect answers
+- Animated progress bar
+- Topic-wise performance visualization
 
-Responsive UI
+---
 
-Color-coded correct/incorrect options
+## 🌐 Live Demo
 
-Animated progress bar
+👉 **[Try the Web Version](https://shashwat13244.github.io/C-Code-Quiz-App-for-Learners/)**
 
-Topic performance visualization
+---
 
+## 🧑‍💻 Author
 
+**Shashwat Khandelwal**  
+🎓 B.Tech Computer Science Student  
+💻 Web Developer  
 
-🌐 Live Demo:https://shashwat13244.github.io/C-Code-Quiz-App-for-Learners/
+- 🔗 [GitHub](https://github.com/shashwat13244)  
+- 🔗 [LinkedIn](https://www.linkedin.com/in/shashwat13244)
 
-
-🧑‍💻 Author
-Shashwat Khandelwal
-🎓 B.Tech Computer Science Student | 💻 Web Developer 
-🔗 [GitHub](https://github.com/SHASHWAT13244)  
-🔗 [LinkedIn](https://www.linkedin.com/in/shashwat-khandelwal-a0564532b/)
-
-"C++ Code Quiz App reflects my passion for creating educational tools that blend learning with interactivity."
+> _“C++ Code Quiz App reflects my passion for creating educational tools that blend learning with interactivity.”_
