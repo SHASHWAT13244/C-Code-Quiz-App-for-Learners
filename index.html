@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C++ Code Quiz</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        .quiz-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            background-color: #f8f9fa;
+        }
+        .options {
+            margin: 15px 0;
+        }
+        .option {
+            display: block;
+            margin: 8px 0;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .option:hover {
+            background-color: #dee2e6;
+        }
+        .option.selected {
+            background-color: #a5d8ff;
+        }
+        .option.correct {
+            background-color: #b2f2bb;
+        }
+        .option.incorrect {
+            background-color: #ffc9c9;
+        }
+        .timer {
+            font-weight: bold;
+            color: #e67e22;
+            margin: 10px 0;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        .hint {
+            background-color: #fff3bf;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            display: none;
+        }
+        .explanation {
+            background-color: #e6fcf5;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            display: none;
+        }
+        .results {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            display: none;
+        }
+        .progress-bar {
+            height: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .progress {
+            height: 100%;
+            background-color: #40c057;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        .topic-performance {
+            margin-top: 20px;
+        }
+        .topic-item {
+            margin-bottom: 10px;
+        }
+        .topic-progress {
+            height: 6px;
+            background-color: #e9ecef;
+            border-radius: 3px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        .topic-progress-bar {
+            height: 100%;
+            background-color: #339af0;
+        }
+        .feedback {
+            font-weight: bold;
+            margin: 15px 0;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <h1>======== C++ CODE QUIZ APP ========</h1>
+    
+    <div class="quiz-container">
+        <div id="question-container">
+            <!-- Questions will be inserted here by JavaScript -->
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress" id="progress-bar"></div>
+        </div>
+        
+        <button id="next-btn" disabled>Next Question</button>
+        <button id="hint-btn">Get Hint</button>
+        <button id="submit-btn" style="display: none;">Submit Quiz</button>
+        
+        <div class="hint" id="hint-box"></div>
+        <div class="explanation" id="explanation-box"></div>
+    </div>
+    
+    <div class="results" id="results-container">
+        <h2>========== RESULTS ==========</h2>
+        <div id="score-display"></div>
+        <div class="feedback" id="feedback"></div>
+        <div id="time-taken"></div>
+        
+        <h3>======== PERFORMANCE ANALYSIS ========</h3>
+        <div class="topic-performance" id="topic-performance">
+            <!-- Topic performance will be inserted here -->
+        </div>
+    </div>
+
+    <script>
+        // Quiz questions data
+        const questions = [
+            {
+                question: "Which of the following is a correct identifier in C++?",
+                options: ["1variable", "variable_1", "variable-1", "variable 1"],
+                correctOption: 1,
+                timeLimit: 20,
+                hint: "Consider C++ variable naming rules",
+                explanation: "In C++, identifiers can't start with numbers or contain spaces/hyphens",
+                topic: "Basic Syntax"
+            },
+            {
+                question: "Which keyword is used to define a class in C++?",
+                options: ["def", "function", "class", "object"],
+                correctOption: 2,
+                timeLimit: 25,
+                hint: "It's the same as the concept it defines",
+                explanation: "The 'class' keyword is used to define classes in C++",
+                topic: "OOP Concepts"
+            },
+            {
+                question: "Which operator is used to allocate memory dynamically in C++?",
+                options: ["malloc", "alloc", "new", "make"],
+                correctOption: 2,
+                timeLimit: 30,
+                hint: "Think about C++ specific operators",
+                explanation: "'new' is the C++ operator for dynamic memory allocation",
+                topic: "Memory Management"
+            },
+            {
+                question: "Which of the following is not a C++ data type?",
+                options: ["float", "bool", "real", "char"],
+                correctOption: 2,
+                timeLimit: 15,
+                hint: "Which one doesn't appear in primitive type lists?",
+                explanation: "'real' is not a C++ primitive data type (use float/double instead)",
+                topic: "Data Types"
+            },
+            {
+                question: "What is the size of int in C++ (typically)?",
+                options: ["2 bytes", "4 bytes", "8 bytes", "16 bytes"],
+                correctOption: 1,
+                timeLimit: 20,
+                hint: "Think about common architectures",
+                explanation: "On most modern systems, int is typically 4 bytes",
+                topic: "Data Types"
+            },
+            {
+                question: "Which of the following is used to take input in C++?",
+                options: ["cin", "cout", "input", "scanf"],
+                correctOption: 0,
+                timeLimit: 15,
+                hint: "Which one is the input stream?",
+                explanation: "'cin' is the standard input stream object",
+                topic: "Basic I/O"
+            },
+            {
+                question: "Which is the correct syntax to define a function in C++?",
+                options: ["function myFunc()", "void myFunc()", "myFunc void()", "def myFunc()"],
+                correctOption: 1,
+                timeLimit: 25,
+                hint: "Consider return type placement",
+                explanation: "C++ functions specify return type before the function name",
+                topic: "Functions"
+            },
+            {
+                question: "Which header file is needed for input/output in C++?",
+                options: ["iostream", "stdio.h", "conio.h", "fileio.h"],
+                correctOption: 0,
+                timeLimit: 15,
+                hint: "Which is the standard C++ header?",
+                explanation: "<iostream> is the standard C++ header for I/O operations",
+                topic: "Basic I/O"
+            },
+            {
+                question: "What is the scope resolution operator?",
+                options: ["::", "..", "--", "->"],
+                correctOption: 0,
+                timeLimit: 20,
+                hint: "Think about namespace and class scope",
+                explanation: "'::' is used to access global scope or class members",
+                topic: "Operators"
+            },
+            {
+                question: "What is the output of: cout << 5 / 2;",
+                options: ["2.5", "2", "2.0", "Error"],
+                correctOption: 1,
+                timeLimit: 25,
+                hint: "Consider integer division",
+                explanation: "Integer division truncates the decimal part",
+                topic: "Operators"
+            },
+            {
+                question: "What is the purpose of a virtual destructor in C++?",
+                options: [
+                    "To prevent memory leaks when deleting polymorphic objects",
+                    "To make a class abstract",
+                    "To enable multiple inheritance",
+                    "To improve performance"
+                ],
+                correctOption: 0,
+                timeLimit: 25,
+                hint: "Think about polymorphism and object destruction",
+                explanation: "Virtual destructors ensure proper cleanup when deleting objects through base class pointers",
+                topic: "OOP Concepts"
+            },
+            {
+                question: "Which C++ feature allows compile-time polymorphism?",
+                options: [
+                    "Virtual functions",
+                    "Templates",
+                    "Function overloading",
+                    "Both 2 and 3"
+                ],
+                correctOption: 3,
+                timeLimit: 20,
+                hint: "Polymorphism without runtime overhead",
+                explanation: "Both function overloading and templates provide compile-time polymorphism",
+                topic: "Polymorphism"
+            },
+            {
+                question: "What does RAII stand for in C++?",
+                options: [
+                    "Resource Allocation Is Initialization",
+                    "Runtime Allocation of Internal Instances",
+                    "Recursive Algorithm Implementation",
+                    "Random Access Iterator Interface"
+                ],
+                correctOption: 0,
+                timeLimit: 20,
+                hint: "It's a fundamental C++ idiom",
+                explanation: "RAII ties resource management to object lifetime",
+                topic: "Memory Management"
+            },
+            {
+                question: "Which STL container provides O(1) average complexity for insertions and deletions?",
+                options: [
+                    "std::vector",
+                    "std::list",
+                    "std::unordered_map",
+                    "std::set"
+                ],
+                correctOption: 1,
+                timeLimit: 25,
+                hint: "Think about linked data structures",
+                explanation: "std::list (doubly-linked list) provides O(1) insertions/deletions",
+                topic: "STL Containers"
+            },
+            {
+                question: "What is the output of: std::cout << sizeof('a'); in C++?",
+                options: [
+                    "1",
+                    "2",
+                    "4",
+                    "Depends on the compiler"
+                ],
+                correctOption: 0,
+                timeLimit: 15,
+                hint: "Character literals in C++ vs C",
+                explanation: "In C++, character literals are of type char (1 byte), unlike in C",
+                topic: "Data Types"
+            },
+            {
+                question: "Which keyword is used to prevent method overriding in a derived class?",
+                options: [
+                    "static",
+                    "const",
+                    "final",
+                    "sealed"
+                ],
+                correctOption: 2,
+                timeLimit: 20,
+                hint: "Introduced in C++11",
+                explanation: "The 'final' keyword prevents further overriding of virtual methods",
+                topic: "OOP Concepts"
+            },
+            {
+                question: "What is the purpose of std::move?",
+                options: [
+                    "To physically move an object in memory",
+                    "To transfer ownership of resources",
+                    "To copy an object efficiently",
+                    "To change an object's type"
+                ],
+                correctOption: 1,
+                timeLimit: 25,
+                hint: "Part of move semantics",
+                explanation: "std::move casts to rvalue reference, enabling resource transfer",
+                topic: "Move Semantics"
+            },
+            {
+                question: "Which of these is not a C++ smart pointer?",
+                options: [
+                    "std::unique_ptr",
+                    "std::shared_ptr",
+                    "std::auto_ptr",
+                    "std::raw_ptr"
+                ],
+                correctOption: 3,
+                timeLimit: 20,
+                hint: "Deprecated pointers vs non-existent ones",
+                explanation: "std::raw_ptr doesn't exist (though std::auto_ptr is deprecated)",
+                topic: "Memory Management"
+            },
+            {
+                question: "What does SFINAE stand for in C++ template metaprogramming?",
+                options: [
+                    "Standard Function Inline Assembly Extension",
+                    "Substitution Failure Is Not An Error",
+                    "Specialized Function Invocation And Evaluation",
+                    "Static Function Initialization And Execution"
+                ],
+                correctOption: 1,
+                timeLimit: 30,
+                hint: "Template substitution behavior",
+                explanation: "SFINAE allows template substitution failures to quietly remove candidates",
+                topic: "Templates"
+            },
+            {
+                question: "Which C++17 feature allows accessing multiple return values more easily?",
+                options: [
+                    "auto keyword",
+                    "structured bindings",
+                    "template deduction",
+                    "lambda captures"
+                ],
+                correctOption: 1,
+                timeLimit: 25,
+                hint: "Works with tuples and structs",
+                explanation: "Structured bindings allow auto [x,y] = func_returning_pair();",
+                topic: "Modern C++"
+            }
+        ];
+
+        // Shuffle questions
+        questions.sort(() => Math.random() - 0.5);
+
+        // DOM elements
+        const questionContainer = document.getElementById('question-container');
+        const nextBtn = document.getElementById('next-btn');
+        const hintBtn = document.getElementById('hint-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const hintBox = document.getElementById('hint-box');
+        const explanationBox = document.getElementById('explanation-box');
+        const resultsContainer = document.getElementById('results-container');
+        const scoreDisplay = document.getElementById('score-display');
+        const feedback = document.getElementById('feedback');
+        const timeTaken = document.getElementById('time-taken');
+        const topicPerformance = document.getElementById('topic-performance');
+        const progressBar = document.getElementById('progress-bar');
+
+        // Quiz state
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let selectedOption = null;
+        let timer;
+        let timeLeft;
+        let quizStartTime;
+        let topicStats = {};
+
+        // Initialize topic stats
+        questions.forEach(q => {
+            if (!topicStats[q.topic]) {
+                topicStats[q.topic] = { correct: 0, total: 0 };
+            }
+        });
+
+        // Start the quiz
+        function startQuiz() {
+            quizStartTime = new Date();
+            showQuestion();
+        }
+
+        // Display current question
+        function showQuestion() {
+            resetState();
+            const question = questions[currentQuestionIndex];
+            timeLeft = question.timeLimit;
+            
+            // Display question
+            const questionElement = document.createElement('div');
+            questionElement.classList.add('question');
+            questionElement.innerHTML = `
+                <h3>Q${currentQuestionIndex + 1}. ${question.question}</h3>
+                <div class="timer">Time left: <span id="time">${timeLeft}</span> seconds</div>
+                <div class="options" id="options"></div>
+            `;
+            questionContainer.appendChild(questionElement);
+            
+            // Display options
+            const optionsContainer = document.getElementById('options');
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.classList.add('option');
+                optionElement.textContent = `${index + 1}) ${option}`;
+                optionElement.dataset.index = index;
+                optionElement.addEventListener('click', selectOption);
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Start timer
+            updateTimerDisplay();
+            timer = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    timeExpired();
+                }
+            }, 1000);
+            
+            // Update progress bar
+            progressBar.style.width = `${(currentQuestionIndex / questions.length) * 100}%`;
+        }
+
+        // Update timer display
+        function updateTimerDisplay() {
+            const timeElement = document.getElementById('time');
+            if (timeElement) {
+                timeElement.textContent = timeLeft;
+                
+                // Change color when time is running low
+                if (timeLeft <= 5) {
+                    timeElement.style.color = '#e03131';
+                } else if (timeLeft <= 10) {
+                    timeElement.style.color = '#e67700';
+                } else {
+                    timeElement.style.color = '#2b8a3e';
+                }
+            }
+        }
+
+        // Time expired handler
+        function timeExpired() {
+            const question = questions[currentQuestionIndex];
+            const options = document.querySelectorAll('.option');
+            
+            // Mark correct answer
+            options[question.correctOption].classList.add('correct');
+            
+            // Show explanation
+            explanationBox.textContent = question.explanation;
+            explanationBox.style.display = 'block';
+            
+            // Disable all options
+            options.forEach(option => {
+                option.style.cursor = 'default';
+                option.removeEventListener('click', selectOption);
+            });
+            
+            // Update topic stats
+            topicStats[question.topic].total++;
+            
+            // Enable next button
+            nextBtn.disabled = false;
+            
+            // Show submit button if last question
+            if (currentQuestionIndex === questions.length - 1) {
+                submitBtn.style.display = 'inline-block';
+                nextBtn.style.display = 'none';
+            }
+        }
+
+        // Reset question state
+        function resetState() {
+            clearInterval(timer);
+            hintBox.style.display = 'none';
+            explanationBox.style.display = 'none';
+            nextBtn.disabled = true;
+            submitBtn.style.display = 'none';
+            nextBtn.style.display = 'inline-block';
+            
+            while (questionContainer.firstChild) {
+                questionContainer.removeChild(questionContainer.firstChild);
+            }
+        }
+
+        // Select an option
+        function selectOption(e) {
+            const selectedElement = e.target;
+            const question = questions[currentQuestionIndex];
+            
+            // Clear previous selection
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => {
+                option.classList.remove('selected');
+                option.style.cursor = 'default';
+                option.removeEventListener('click', selectOption);
+            });
+            
+            // Mark selected option
+            selectedElement.classList.add('selected');
+            selectedOption = parseInt(selectedElement.dataset.index);
+            
+            // Check answer
+            const isCorrect = selectedOption === question.correctOption;
+            
+            // Mark correct/incorrect
+            if (isCorrect) {
+                selectedElement.classList.add('correct');
+                score++;
+            } else {
+                selectedElement.classList.add('incorrect');
+                options[question.correctOption].classList.add('correct');
+            }
+            
+            // Update topic stats
+            topicStats[question.topic].total++;
+            if (isCorrect) {
+                topicStats[question.topic].correct++;
+            }
+            
+            // Show explanation
+            explanationBox.textContent = question.explanation;
+            explanationBox.style.display = 'block';
+            
+            // Stop timer
+            clearInterval(timer);
+            
+            // Enable next button
+            nextBtn.disabled = false;
+            
+            // Show submit button if last question
+            if (currentQuestionIndex === questions.length - 1) {
+                submitBtn.style.display = 'inline-block';
+                nextBtn.style.display = 'none';
+            }
+        }
+
+        // Show hint
+        hintBtn.addEventListener('click', () => {
+            hintBox.textContent = questions[currentQuestionIndex].hint;
+            hintBox.style.display = 'block';
+        });
+
+        // Next question
+        nextBtn.addEventListener('click', () => {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                showQuestion();
+            }
+        });
+
+        // Submit quiz
+        submitBtn.addEventListener('click', showResults);
+
+        // Show results
+        function showResults() {
+            const quizEndTime = new Date();
+            const timeSpent = Math.floor((quizEndTime - quizStartTime) / 1000);
+            const percentage = Math.round((score / questions.length) * 100);
+            
+            // Hide quiz container
+            document.querySelector('.quiz-container').style.display = 'none';
+            
+            // Show results
+            resultsContainer.style.display = 'block';
+            scoreDisplay.innerHTML = `Your Score: ${score} / ${questions.length}<br>Percentage: ${percentage}%`;
+            timeTaken.textContent = `Time Taken: ${timeSpent} seconds`;
+            
+            // Show feedback
+            if (percentage === 100) {
+                feedback.textContent = "🌟 Excellent! Perfect score!";
+            } else if (percentage >= 75) {
+                feedback.textContent = "🎉 Great job!";
+            } else if (percentage >= 50) {
+                feedback.textContent = "👍 Good effort. Keep learning.";
+            } else {
+                feedback.textContent = "📚 Needs improvement. Try again!";
+            }
+            
+            // Show topic performance
+            for (const [topic, stats] of Object.entries(topicStats)) {
+                if (stats.total > 0) {
+                    const percentage = Math.round((stats.correct / stats.total) * 100);
+                    const topicElement = document.createElement('div');
+                    topicElement.classList.add('topic-item');
+                    topicElement.innerHTML = `
+                        <div>${topic}: ${stats.correct}/${stats.total} (${percentage}%)</div>
+                        <div class="topic-progress">
+                            <div class="topic-progress-bar" style="width: ${percentage}%"></div>
+                        </div>
+                        ${percentage < 50 ? '<div style="color: #e03131; font-size: 0.9em;">➡ Focus more on this topic!</div>' : ''}
+                    `;
+                    topicPerformance.appendChild(topicElement);
+                }
+            }
+        }
+
+        // Start the quiz
+        startQuiz();
+    </script>
+</body>
+</html>
