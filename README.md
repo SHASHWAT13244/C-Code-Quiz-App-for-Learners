@@ -93,8 +93,8 @@ Topic performance visualization
 
 🧑‍💻 Author
 Shashwat Khandelwal
-🎓 B.Tech Computer Science Student | 💻 Web Developer & C++ Programmer
-🔗 GitHub
-🔗 LinkedIn
+🎓 B.Tech Computer Science Student | 💻 Web Developer 
+🔗 [GitHub](https://github.com/SHASHWAT13244)  
+🔗 [LinkedIn](https://www.linkedin.com/in/shashwat-khandelwal-a0564532b/)
 
 "C++ Code Quiz App reflects my passion for creating educational tools that blend learning with interactivity."
